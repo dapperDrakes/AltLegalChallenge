@@ -32,7 +32,6 @@ var config = {
    net: 'empty',
    tls: 'empty'
  }
-  // target: 'node'
 };
 
 module.exports = config;

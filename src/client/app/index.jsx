@@ -1,21 +1,97 @@
 import React from 'react';
 import {render} from 'react-dom';
-import Twitter from 'twitter';
-var client = new Twitter({
-  consumer_key: "ERAKvb3RQEiKKovdTgr3QadOH",
-  consumer_secret: "Ah03sBHpCWD51n0t5gvO6nKv5mx06JazdheL1ArMnb7xEJ7qFK",
-  access_token_key: "1149004722-aXRhWGNykNLm9NGX7qN5MqD9OMONxMJVucpB63N",
-  access_token_secret: "qTxVZZZhVYGJSfXNXj4L4bTvBuMuANEnrIEDRYhLa6dLJ"
-});
-client.get('favorites/list', function(error, tweets, response) {
-  if(error) throw error;
-  console.log(tweets);  // The favorites.
-  console.log(response);  // Raw response object.
-});
+import Navbar from './Navbar.jsx';
+import {Input} from 're-bulma';
+import $ from 'jquery';
 
 class App extends React.Component {
   render (){
-    return <p> Hello React!a</p>;
+    return (
+      <div>
+        <Home />
+        <Navbar />
+      </div>
+    )
+  }
+}
+
+class Hash extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      tweets: ""
+    }
+  }
+  componentWillMount(){
+    $.ajax({
+      type: "POST",
+      url: "/get/tweets",
+      dataType: "json",
+      headers: {
+        "content-type": "application/json"
+      },
+      data: JSON.stringify({"hashtag":this.props.hashtag}),
+      success: function(data){
+        this.setState({tweets: data})
+        console.log('this is the data',data);
+      },
+      error: function(error){
+        console.log('this is an error', error);
+      }
+    })
+  }
+  render(){
+    return(
+      <div>
+        <div>
+          {this.props.hashtag}
+          this is just some crap!
+
+        </div>
+      </div>
+    )
+  }
+}
+
+class Home extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      watchHashes: [],
+      placeholder: "Text Input",
+      text: ""
+    }
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.createHash = this.createHash.bind(this);
+    this.createHashes = this.createHashes.bind(this);
+  }
+  createHash(hashElement,idx) {
+    return <Hash hashtag={hashElement} key={idx}/>
+  };
+  createHashes(hashes){
+    return hashes.map(this.createHash);
+  }
+  handleKeyPress(event) {
+    var watchArray = this.state.watchHashes.slice();
+    if(event.key == 'Enter'){
+      watchArray.push(event.target.value);
+      this.setState({watchHashes: watchArray}, ()=>{
+        console.log(this.state.watchHashes)
+      })
+    }
+  }
+  render(){
+    return (
+      <div>
+        <div>
+          <Input type="text" placeholder={this.state.placeholder}
+            onKeyPress={this.handleKeyPress}/>
+        </div>
+        <div>
+          {this.createHashes(this.state.watchHashes)}
+        </div>
+      </div>
+    )
   }
 }
 
