@@ -4,3 +4,6 @@ node_modules
 # misc
 .DS_Store
 npm-debug.log
+
+#bundle
+public/bundle.js

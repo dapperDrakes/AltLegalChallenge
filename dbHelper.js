@@ -7,7 +7,7 @@ const request = require("request");
 const dbFunc = {
   addHash: function(hash, res) {
     var hash = {name: hash}
-    console.log('this is dbhelper hash obj', typeof hash);
+    console.log('this is dbhelper hash obj', hash);
     let newHash = new Model.hash(hash);
     newHash.save(function(err){
       if(err) {
@@ -35,7 +35,8 @@ const dbFunc = {
             res.send(new Error("tweet not added to hash document"));
           }
           else {
-            // res.send("tweet added to user", req);
+            console.log('tweetObj', tweetObj);
+            // res.status(200).send("tweet added to user");
           }
         }
       );

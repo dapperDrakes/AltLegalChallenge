@@ -1,0 +1,5 @@
+.hashtagContainer {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-around;
+}
