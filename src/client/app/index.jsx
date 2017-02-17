@@ -23,30 +23,60 @@ class Hash extends React.Component {
     }
   }
   componentWillMount(){
+    var hashtag = this.props.hashtag;
     $.ajax({
       type: "POST",
-      url: "/get/tweets",
+      url: "http://localhost:3000/add/hash",
       dataType: "json",
       headers: {
         "content-type": "application/json"
       },
-      data: JSON.stringify({"hashtag":this.props.hashtag}),
+      data: JSON.stringify({"hashtag": hashtag}),
       success: function(data){
-        this.setState({tweets: data})
         console.log('this is the data',data);
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:3000/add/tweets",
+          dataType: "json",
+          headers: {
+            "content-type": "application/json"
+          },
+          data: JSON.stringify({"hashtag":hashtag}),
+          success: function(data){
+            // console.log('this is the data',data);
+            // $.ajax({
+            //   type: "POST",
+            //   url: "http://localhost:3000/get/tweets",
+            //   dataType: "json",
+            //   headers: {
+            //     "content-type": "application/json"
+            //   },
+            //   data: JSON.stringify({"hashtag":hashtag}),
+            //   success: function(data){
+            //     console.log('successful get data for hashtag', data);
+            //   },
+            //   error: function(error){
+            //     console.log('this is an error from get tweets', error )
+            //   }
+            // });
+          },
+          error: function(error){
+            console.log('this is an error from add tweets', error);
+          }
+        });
       },
       error: function(error){
         console.log('this is an error', error);
       }
-    })
+    });
   }
   render(){
     return(
       <div>
         <div>
           {this.props.hashtag}
-          this is just some crap!
-
+          LINE <br/>
+          Line <br/>
         </div>
       </div>
     )
