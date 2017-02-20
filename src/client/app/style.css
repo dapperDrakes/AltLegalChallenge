@@ -1,0 +1,44 @@
+.body {
+  background-color: #E9E9E9;
+}
+.hashtagContainer {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-around;
+}
+.TweetBox {
+  background-color: white;
+  width: 25%;
+  length: 70%;
+  border-radius: .5em;
+}
+.titleImage {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+}
+.profileImage {
+  border-radius: .5em;
+}
+.profileInfo {
+  display: -webkit-flex;
+  display: flex;
+  align-items:flex-start;
+}
+.tweetRender {
+  /*background-color: red;*/
+  padding: 1em;
+  border-bottom: .1em solid #D3D3D3;
+  margin-bottom: .5em;
+}
+.center {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+}
+.screenName {
+  margin-left: .5em;
+}
+.marginTop {
+  margin-top: .5em;
+}

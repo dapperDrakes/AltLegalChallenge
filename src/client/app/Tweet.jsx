@@ -1,54 +1,96 @@
 import React from 'react';
 import $ from 'jquery';
 const io = require('socket.io-client');
+// import {Button} from 're-bulma';
 
 class Tweet extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      tweets: []
+    }
+    this.getTweets = this.getTweets.bind(this);
+    this.deleteHash = this.deleteHash.bind(this);
+  }
   componentWillMount(){
-    let hashtag = this.props.hashtag;
+    this.getTweets();
+    let intervalId = setInterval(this.getTweets, 6000000)
+  }
+  getTweets(){
+    var that = this;
     $.ajax({
       type: "POST",
-      url: "http://localhost:3000/add/hash",
-      dataType: "json",
+      url: "http://localhost:3000/get/tweets",
       headers: {
         "content-type": "application/json"
       },
-      data: JSON.stringify({"hashtag": hashtag}),
+      data: JSON.stringify({"hashtag": this.props.hashtag}),
       success: function(data){
-        console.log('successful add hash to db',data);
-        $.ajax({
-          type: "POST",
-          url: "http://localhost:3000/add/tweets",
-          dataType: "json",
-          headers: {
-            "content-type": "application/json"
-          },
-          data: JSON.stringify({"hashtag":hashtag}),
-          success: function(data){
-            console.log('tweets successfully added to db',data);
-          },
-          error: function(error){
-            console.log('this is an error from add tweets', error);
-          }
-        });
+        console.log('successful return tweets', data);
+        that.setState({tweets: data});
       },
       error: function(error){
-        console.log('this is an error', error);
+        console.log('error in post tweet', error);
       }
     });
   }
-
+  deleteHash(){
+    var that = this;
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/delete/hash",
+      headers: {
+        "content-type": "application/json"
+      },
+      data: JSON.stringify({"hashtag": this.props.hashtag}),
+      success: function(data){
+        console.log('successful delete hash', data);
+        that.props.updateHashes();
+        that.getTweets();
+      },
+      error: function(error){
+        console.log('error in post tweet', error);
+      }
+    });
+  }
   render(){
     return (
-      <div>{this.props.hashtag}</div>
+      <div className="TweetBox">
+        <div className="titleImage">
+          <h2>
+            {this.props.hashtag}
+          </h2>
+          <div onClick={this.deleteHash}>Delete</div>
+        </div>
+        <div>
+          {
+            this.state.tweets.map((tweet, idx) => {
+              return (
+                <div className="tweetRender" key={idx}>
+                  <div>
+                    <div className="profileInfo">
+                      <img className="profileImage" src={tweet.image}/>
+                      <div className="screenName">
+                        <div>
+                          {tweet.name}
+                        </div>
+                        <div>
+                          {tweet.screenName}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="margin-top">
+                      {tweet.text}
+                    </div>
+                  </div>
+                </div>
+              )
+            })
+          }
+        </div>
+      </div>
     )
   }
 }
 
 export default Tweet;
-// socket attempt : failed
-// var socket = io.connect('http://localhost');
-// var self = this;
-// socket.on('info', function(data){
-//   console.log('socket on ',data.tweet);
-//   socket.emit('my other event', {my: 'data'});
-// })

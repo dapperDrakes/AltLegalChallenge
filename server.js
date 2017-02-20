@@ -30,44 +30,43 @@ app.use(function(req, res, next) {
 });
 
 app.post('/add/hash', function(req, res){
-  console.log('add hash server', req.body.hashtag)
-  var hash = req.body.hashtag;
-  dbHelper.addHash(hash, res);
-  res.send(JSON.stringify("completed"));
+  console.log('add/hash');
+  dbHelper.addHash(req.body, res);
 });
+
+app.post('/delete/hash', function(req, res){
+  dbHelper.deleteHash(req.body, res);
+})
+
+app.get('/get/hashes', function(req, res){
+  dbHelper.getHashes(req, res);
+});
+
+app.get('/get/trending', function(req, res){
+  let hashTags = [];
+  T.get('trends/place', { id: 1 }, function(err, data, response){
+    data[0].trends.forEach(function(element, idx){
+      if(element.name[0] === "#"){
+        hashTags.push(element);
+      }
+    })
+    res.status(200).send(hashTags)
+  })
+})
 
 app.post('/get/tweets', function(req, res){
-  console.log('get/tweets endpoint hit', req.body.hashtag);
-  dbHelper.getTweets(req.body.hashtag, res);
+  var tweetArray = [];
+  T.get('search/tweets', { q: req.body.hashtag, lang: "en", count: 10 }, function(err, data, response){
+    console.log('data statuses', data)
+    for(var i = 0; i < data.statuses.length; i++){
+      var tweetObject = {
+        text: data.statuses[i].text,
+        name: data.statuses[i].user.name,
+        screenName: "@" + data.statuses[i].user.screen_name,
+        image: data.statuses[i].user.profile_image_url
+      }
+      tweetArray.push(tweetObject)
+    }
+    res.status(200).send(tweetArray);
+  });
 });
-
-app.post('/add/tweets', function(req, res){
-  var requestObj;
-  var hash = req.body.hashtag;
-  var stream = T.stream('statuses/filter', { track: '#' + req.body.hashtag, language: 'en'});
-    stream.on('tweet', function(tweet) {
-      requestObj = {"hash": hash, "newTweet": tweet}
-      dbHelper.addTweet(requestObj, res);
-    });
-});
-
-// var stream = T.stream('statuses/filter', { track: JSON.parse(localStorage.getItem("hashes")), language: 'en'});
-// io.on('connection', function(socket){
-//   stream.on('tweet', function(tweet){
-//     socket.emit("info", {tweet:tweet});
-//   })
-// })
-// console.log(stream);
-
-// socket.io experiment failed
-// io.on('connection', function(socket) {
-//   stream.on('tweet', function (tweet) {
-//     console.log(tweet);
-//     // var requestObj = {"hash": hash, "newTweet": tweet}
-//     // dbHelper.addTweet(requestObj, res);
-//     socket.emit('info', {tweet: tweet});
-//   });
-// })
-// app.listen(process.env.PORT || 3000, function(){
-//   console.log('Server is running', localStorage);
-// });
