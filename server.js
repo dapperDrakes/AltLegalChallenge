@@ -56,7 +56,7 @@ app.get('/get/trending', function(req, res){
 
 app.post('/get/tweets', function(req, res){
   var tweetArray = [];
-  T.get('search/tweets', { q: req.body.hashtag, lang: "en", count: 10 }, function(err, data, response){
+  T.get('search/tweets', { q: req.body.hashtag, lang: "en", count: 5 }, function(err, data, response){
     for(var i = 0; i < data.statuses.length; i++){
       var tweetObject = {
         text: data.statuses[i].text,

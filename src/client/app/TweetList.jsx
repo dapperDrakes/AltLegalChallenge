@@ -1,6 +1,7 @@
 import React from 'react';
 import Tweet from './Tweet.jsx';
 
+// List of dynamically rendered Tweet components
 class TweetList extends React.Component {
   render(){
     return (

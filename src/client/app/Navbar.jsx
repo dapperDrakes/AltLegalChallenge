@@ -1,6 +1,7 @@
 import React from 'react';
 import { Nav, NavGroup, NavItem, NavToggle, Button, Icon, Image } from 're-bulma';
 
+// Styling Objects for Bulma
 const style = {
   "height": "5em",
   "width": "100%",

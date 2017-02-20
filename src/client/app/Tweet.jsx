@@ -1,7 +1,9 @@
 import React from 'react';
 import $ from 'jquery';
 const io = require('socket.io-client');
+import { Icon } from 're-bulma';
 
+// Individual hashtag tweets component
 class Tweet extends React.Component {
   constructor(props){
     super(props);
@@ -11,10 +13,13 @@ class Tweet extends React.Component {
     this.getTweets = this.getTweets.bind(this);
     this.deleteHash = this.deleteHash.bind(this);
   }
+  // Twitter API call to get associated tweets with hashtag
+    //  Set Interval to retrieve newest tweets every 5 minutes
   componentWillMount(){
     this.getTweets();
-    let intervalId = setInterval(this.getTweets, 6000000)
+    let intervalId = setInterval(this.getTweets, 300000)
   }
+  // Twitter API call to retrieve tweets with hashtag. Hashtag is passed as prop from Home component
   getTweets(){
     var that = this;
     $.ajax({
@@ -33,6 +38,8 @@ class Tweet extends React.Component {
       }
     });
   }
+  // Delete hashtag from DB
+    // Delete Hashtag calls on updateHashes prop from main component
   deleteHash(){
     var that = this;
     $.ajax({
@@ -59,7 +66,7 @@ class Tweet extends React.Component {
           <h2 className="hashTitle">
             {this.props.hashtag}
           </h2>
-          <button className="button" onClick={this.deleteHash}>Delete</button>
+          <Icon className="deleteButton" icon="fa fa-minus" onClick={this.deleteHash} />
         </div>
         <div>
           {
