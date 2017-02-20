@@ -44,7 +44,7 @@ app.get('/get/hashes', function(req, res){
 
 app.get('/get/trending', function(req, res){
   let hashTags = [];
-  T.get('trends/place', { id: 1 }, function(err, data, response){
+  T.get('trends/place', { id: 23424977 }, function(err, data, response){
     data[0].trends.forEach(function(element, idx){
       if(element.name[0] === "#"){
         hashTags.push(element);
@@ -57,7 +57,6 @@ app.get('/get/trending', function(req, res){
 app.post('/get/tweets', function(req, res){
   var tweetArray = [];
   T.get('search/tweets', { q: req.body.hashtag, lang: "en", count: 10 }, function(err, data, response){
-    console.log('data statuses', data)
     for(var i = 0; i < data.statuses.length; i++){
       var tweetObject = {
         text: data.statuses[i].text,

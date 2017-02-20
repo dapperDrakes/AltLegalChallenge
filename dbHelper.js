@@ -13,7 +13,7 @@ const dbFunc = {
         if(count < 3){
           Model.hash.findOne({"name": hash.name}, function(err, result){
             if(err) {
-              console.log("Error: ", error);
+              console.log("error in checking hash", error);
             }
             if(!result) {
               let newHash = new Model.hash(hash);
@@ -21,8 +21,7 @@ const dbFunc = {
                 if(err) {
                   console.log('error in saving the hash to database');
                 }else{
-                  console.log('hash added', hash );
-                  res.status(200).send('great');
+                  res.status(200).send('hash added to DB');
                 }
               });
             }
@@ -36,7 +35,6 @@ const dbFunc = {
       if(err){
         console.log('error in fetching hashes', err);
       }
-      console.log('found in get hashes', found);
       res.send(found);
     });
   },

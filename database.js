@@ -6,7 +6,6 @@ mongoose.connect('mongodb://altLegalChallenge:altlegal1@ds153719.mlab.com:53719/
 const hashSchema = new Schema({
   name: String
 });
-
 const Hash = mongoose.model('Hash', hashSchema);
 
 module.exports = {hash: Hash};

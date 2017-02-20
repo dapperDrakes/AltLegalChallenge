@@ -100,12 +100,13 @@ class Home extends React.Component {
   render(){
     return (
       <div>
-        <div>
+        <div className="autoComplete">
           <AutoComplete
             dataSource={this.state.trends}
             onUpdateInput={this.textChange}
             onNewRequest={this.handleKeyPress}
             hintText="Add a hashtag"
+            animated='true'
           />
         </div>
         <div>

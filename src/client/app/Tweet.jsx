@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 const io = require('socket.io-client');
-// import {Button} from 're-bulma';
 
 class Tweet extends React.Component {
   constructor(props){
@@ -57,10 +56,10 @@ class Tweet extends React.Component {
     return (
       <div className="TweetBox">
         <div className="titleImage">
-          <h2>
+          <h2 className="hashTitle">
             {this.props.hashtag}
           </h2>
-          <div onClick={this.deleteHash}>Delete</div>
+          <button className="button" onClick={this.deleteHash}>Delete</button>
         </div>
         <div>
           {
@@ -71,10 +70,10 @@ class Tweet extends React.Component {
                     <div className="profileInfo">
                       <img className="profileImage" src={tweet.image}/>
                       <div className="screenName">
-                        <div>
+                        <div className="fontBold">
                           {tweet.name}
                         </div>
-                        <div>
+                        <div className="greyText">
                           {tweet.screenName}
                         </div>
                       </div>

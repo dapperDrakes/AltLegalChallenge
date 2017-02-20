@@ -7,8 +7,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 class App extends React.Component {
   render (){
     return (
-      <div className="body">
-        {/* <Navbar /> */}
+      <div>
+        <Navbar />
         <MuiThemeProvider>
           <Home />
         </MuiThemeProvider>
