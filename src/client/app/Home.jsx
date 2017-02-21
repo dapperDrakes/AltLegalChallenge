@@ -129,8 +129,6 @@ class Home extends React.Component {
             onUpdateInput={this.textChange}
             onNewRequest={this.handleKeyPress}
             hintText="Add a hashtag"
-            animated='true'
-            open='true'
             underlineFocusStyle={styles.underlineStyle}
           />
         </div>
